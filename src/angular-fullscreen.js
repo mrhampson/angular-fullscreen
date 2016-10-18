@@ -35,6 +35,13 @@
                   }
                } else if (element.msRequestFullscreen) {
                   element.msRequestFullscreen();
+               } else if (typeof window.ActiveXObject !== 'undefined') {
+                  // For IE < 11
+                  var wscript = new ActiveXObject('WScript.Shell');
+                  if (wscript != null) {
+                     wscript.SendKeys('{F11}');
+                  }
+                  document.fullscreenElement = element;
                }
             },
             cancel: function() {
@@ -46,6 +53,12 @@
                   document.webkitExitFullscreen();
                } else if (document.msExitFullscreen) {
                   document.msExitFullscreen();
+               } else if (typeof window.ActiveXObject !== 'undefined' && docuemnt.fullscreenElement) {
+                  var wscript = new ActiveXObject('WScript.Shell');
+                  if (wscript != null) {
+                     wscript.SendKeys('{F11}');
+                  }
+                  delete docuemnt.fullscreenElement;
                }
             },
             isEnabled: function(){
